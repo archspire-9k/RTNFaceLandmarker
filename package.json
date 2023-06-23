@@ -1,0 +1,36 @@
+{
+    "name": "rtn-face-landmarker",
+    "version": "0.0.1",
+    "description": "Showcase a Fabric Native Component with a centered text",
+    "react-native": "js/index",
+    "source": "js/index",
+    "files": [
+      "js",
+      "android",
+      "ios",
+      "rtn-face-landmarker.podspec",
+      "!android/build",
+      "!ios/build",
+      "!**/__tests__",
+      "!**/__fixtures__",
+      "!**/__mocks__"
+    ],
+    "keywords": ["react-native", "ios", "android"],
+    "repository": "https://github.com/archspire-9k/rtn-face-landmarker",
+    "author": "Matt dml122@case.edu (https://github.com/archspire-9k)",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/archspire-9k/rtn-face-landmarker/issues"
+    },
+    "homepage": "https://github.com/archspire-9k/rtn-face-landmarker#readme",
+    "devDependencies": {},
+    "peerDependencies": {
+      "react": "*",
+      "react-native": "*"
+    },
+    "codegenConfig": {
+      "name": "RTNFaceLandmarkerSpecs",
+      "type": "components",
+      "jsSrcsDir": "js"
+    }
+  }
