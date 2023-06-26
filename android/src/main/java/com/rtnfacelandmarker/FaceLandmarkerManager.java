@@ -14,14 +14,13 @@ import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerDelegate;
 import com.rtnfacelandmarker.FaceLandmarker;
 
 @ReactModule(name = FaceLandmarkerManager.NAME)
-public class FaceLandmarkerManager extends SimpleViewManager<FaceLandmarker>
-        implements RTNFaceLandmarkerManagerInterface<FaceLandmarker> {
+public class FaceLandmarkerManager extends SimpleViewManager<FaceLandmarker> implements RTNFaceLandmarkerManagerInterface<FaceLandmarker> {
 
     private final ViewManagerDelegate<FaceLandmarker> mDelegate;
 
     static final String NAME = "RTNFaceLandmarker";
 
-    public FaceLandmarkerManager(ReactApplicationContext context) {
+    public FaceLandmarkerManager(ReactApplicationContext mCallerContext) {
         mDelegate = new RTNFaceLandmarkerManagerDelegate<>(this);
     }
 
@@ -40,6 +39,8 @@ public class FaceLandmarkerManager extends SimpleViewManager<FaceLandmarker>
     @NonNull
     @Override
     protected FaceLandmarker createViewInstance(@NonNull ThemedReactContext context) {
-        return new FaceLandmarker(context);
+        FaceLandmarker faceLandmarker = new FaceLandmarker(mCallerContext);
+        faceLandmarker.setUpCamera(mCallerContext)
+        return faceLandmarker;
     }
 }
