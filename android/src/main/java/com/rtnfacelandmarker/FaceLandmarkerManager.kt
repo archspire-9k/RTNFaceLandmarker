@@ -29,8 +29,8 @@ class FaceLandmarkerManager(private val mCallerContext: ReactApplicationContext)
     }
 
     override fun createViewInstance(reactContext: ThemedReactContext): FaceLandmarker {
-        val reactnativeScannerView = FaceLandmarker(mCallerContext)
-        reactnativeScannerView.setUpCamera(mCallerContext)
+        val reactnativeScannerView = FaceLandmarker(reactContext)
+        reactnativeScannerView.setUpCamera(reactContext)
         return reactnativeScannerView
     }
 
@@ -38,10 +38,4 @@ class FaceLandmarkerManager(private val mCallerContext: ReactApplicationContext)
         const val NAME = "FaceLandmarker"
     }
 
-    override fun getExportedCustomDirectEventTypeConstants(): Map<String?, Any> {
-        return MapBuilder.of(
-            "topOnQrScanned",
-            MapBuilder.of("registrationName", "onQrScanned")
-        )
-    }
 }

@@ -2,6 +2,7 @@
 
 package com.rtnfacelandmarker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.camera.core.AspectRatio
@@ -45,6 +46,7 @@ import kotlin.coroutines.suspendCoroutine
     Only works in portrait mode so far since the readjustment formula takes the value of width directly
  */
 
+@SuppressLint("UnsafeOptInUsageError")
 @Composable
 fun CameraView(executor: ExecutorService, defaultDetector: FaceMeshDetector, context: Context) {
     var boundsList by remember { mutableStateOf(listOf<FaceMesh>()) }
@@ -93,7 +95,6 @@ fun CameraView(executor: ExecutorService, defaultDetector: FaceMeshDetector, con
             }
     }
     val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
-
     // 2
     LaunchedEffect(lensFacing) {
         val cameraProvider = context.getCameraProvider()
@@ -103,7 +104,6 @@ fun CameraView(executor: ExecutorService, defaultDetector: FaceMeshDetector, con
         )
         preview.setSurfaceProvider(previewView.surfaceProvider)
     }
-
     // 3
     Box(
         contentAlignment = Alignment.BottomCenter,
@@ -118,14 +118,17 @@ fun CameraView(executor: ExecutorService, defaultDetector: FaceMeshDetector, con
                 Log.d("RATIO", "Composable ratio $scaleHeight : $scaleWidth")
             }
     ) {
-
+        //Works till here
         AndroidView(
-            { previewView }, modifier = Modifier
+            { previewView
+            }, modifier = Modifier
                 .fillMaxSize()
         )
+        Log.d("Started", "$previewView")
         Canvas(
             Modifier.fillMaxSize()
         ) {
+            Log.d("Started", "Camend2")
             for (boundPoints in boundsList) {
                 val detectedRegion = boundPoints.boundingBox
                 val detectedPointSet = boundPoints.allPoints

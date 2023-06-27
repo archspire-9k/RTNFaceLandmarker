@@ -3,6 +3,8 @@ package com.rtnfacelandmarker
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Log
+import android.view.Choreographer
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.camera.core.ExperimentalGetImage
@@ -34,7 +36,11 @@ import java.util.concurrent.Executors
     }
 
     init {
-        
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        defaultDetector = FaceMeshDetection.getClient(
+        )
+
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -51,45 +57,55 @@ import java.util.concurrent.Executors
 
         composeView.setContent {
             if (allPermissionsGranted()) {
-                CameraView(
-                    executor = cameraExecutor,
-                    defaultDetector = defaultDetector,
-                    context = LocalContext.current
-                )
+                Log.d("Started", "Permissions granted")
+//                CameraView(
+//                    executor = cameraExecutor,
+//                    defaultDetector = defaultDetector,
+//                    context = context
+//                )
+                FaceLandmarkerText()
             }
         }
-
+        composeView.layoutParams = ViewGroup.LayoutParams(
+                 ViewGroup.LayoutParams.MATCH_PARENT,
+                 ViewGroup.LayoutParams.MATCH_PARENT
+             )
         addView(composeView)
+
+        setupLayoutHack()
+        manuallyLayoutChildren()
     }
 
-    // private fun setupLayoutHack() {
-    //     Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
-    //         override fun doFrame(frameTimeNanos: Long) {
-    //             manuallyLayoutChildren()
-    //             viewTreeObserver.dispatchOnGlobalLayout()
-    //             Choreographer.getInstance().postFrameCallback(this)
-    //         }
-    //     })
-    // }
+     private fun setupLayoutHack() {
+         Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
+             override fun doFrame(frameTimeNanos: Long) {
+                 manuallyLayoutChildren()
+                 viewTreeObserver.dispatchOnGlobalLayout()
+                 Choreographer.getInstance().postFrameCallback(this)
+             }
+         })
+     }
 
-    // private fun manuallyLayoutChildren() {
-    //     for (i in 0 until childCount) {
-    //         val child = getChildAt(i)
-    //         child.measure(
-    //             MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
-    //             MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
-    //         )
-    //         child.layout(0, 0, child.measuredWidth, child.measuredHeight)
-    //     }
-    // }
+     private fun manuallyLayoutChildren() {
+         try {
+             for (i in 0 until childCount) {
+                 val child = getChildAt(i)
+                 child.measure(
+                     MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
+                     MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
+                 )
+                 child.layout(0, 0, child.measuredWidth, child.measuredHeight)
+             }
+         } catch (e: Exception) {
+             Log.d("Started", "$e.message")
+         }
 
-    fun setUpCamera(reactApplicationContext: ReactApplicationContext) {
-        cameraExecutor = Executors.newSingleThreadExecutor()
-
-        defaultDetector = FaceMeshDetection.getClient(
-        )
-
-    }
+     }
+//
+//    fun setUpCamera(reactApplicationContext: ReactApplicationContext) {
+//
+//
+//    }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
