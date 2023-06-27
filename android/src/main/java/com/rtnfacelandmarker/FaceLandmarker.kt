@@ -3,24 +3,17 @@ package com.rtnfacelandmarker
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.compose.ui.platform.ComposeView
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.ExperimentalGetImage
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import com.google.mlkit.vision.facemesh.FaceMeshDetection
 import com.google.mlkit.vision.facemesh.FaceMeshDetector
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class FaceLandmarker(context: Context) : LinearLayout(context) {
+@ExperimentalGetImage class FaceLandmarker(context: Context) : LinearLayout(context) {
 
     // private var preview: PreviewView
     // private var mCameraProvider: ProcessCameraProvider? = null

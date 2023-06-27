@@ -8,10 +8,8 @@ import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewManagerDelegate;
-import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerInterface;
 import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerDelegate;
-import com.rtnfacelandmarker.FaceLandmarker;
+import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerInterface;
 
 @ReactModule(name = FaceLandmarkerManager.NAME)
 public class FaceLandmarkerManager extends SimpleViewManager<FaceLandmarker> implements RTNFaceLandmarkerManagerInterface<FaceLandmarker> {
@@ -39,8 +37,6 @@ public class FaceLandmarkerManager extends SimpleViewManager<FaceLandmarker> imp
     @NonNull
     @Override
     protected FaceLandmarker createViewInstance(@NonNull ThemedReactContext context) {
-        FaceLandmarker faceLandmarker = new FaceLandmarker(mCallerContext);
-        faceLandmarker.setUpCamera(mCallerContext)
-        return faceLandmarker;
+        return new FaceLandmarker(context);
     }
 }
