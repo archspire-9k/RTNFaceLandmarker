@@ -28,7 +28,6 @@ class FaceLandmarkerManager(private val mCallerContext: ReactApplicationContext)
 
     override fun createViewInstance(reactContext: ThemedReactContext): FaceLandmarker {
         val faceLandmarker = FaceLandmarker(mCallerContext)
-        faceLandmarker.setUpCamera(mCallerContext)
         return faceLandmarker
     }
 
