@@ -15,9 +15,12 @@ import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.ContextCompat
 import com.facebook.react.bridge.ReactApplicationContext
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.facemesh.FaceMesh
 import com.google.mlkit.vision.facemesh.FaceMeshDetection
 import com.google.mlkit.vision.facemesh.FaceMeshDetector
 import java.util.concurrent.ExecutorService
@@ -25,7 +28,11 @@ import java.util.concurrent.Executors
 
 class FaceLandmarker(context: Context) :  LinearLayout(context) {
 
+    //main views
+    private val composeView: ComposeView = ComposeView(context)
     private var preview: PreviewView
+
+
     private var mCameraProvider: ProcessCameraProvider? = null
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var defaultDetector: FaceMeshDetector
@@ -34,6 +41,12 @@ class FaceLandmarker(context: Context) :  LinearLayout(context) {
         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
         .setOutputImageFormat(OUTPUT_IMAGE_FORMAT_YUV_420_888)
         .build()
+    private var boundsList = mutableListOf<FaceMesh>()
+    private val screenHeightPx = mutableStateOf(0f)
+    private val screenWidthPx = mutableStateOf(0f)
+    private var scaleFactor = 1f
+    private var scaleHeight: Float = 0f
+    private var scaleWidth: Float = 0f
 
     companion object {
         private val REQUIRED_PERMISSIONS =
@@ -56,6 +69,12 @@ class FaceLandmarker(context: Context) :  LinearLayout(context) {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         addView(preview)
+
+        composeView.setContent {
+            CameraView()
+        }
+
+        addView(composeView)
 
         setupLayoutHack()
         manuallyLayoutChildren()
@@ -107,6 +126,7 @@ class FaceLandmarker(context: Context) :  LinearLayout(context) {
                         // Task completed successfully
                         if (result != null) {
                           Log.d("SUCCESS","Return $result")
+                            boundsList = result
                         }
                         imageProxy.close()
                     }.addOnFailureListener { e ->
