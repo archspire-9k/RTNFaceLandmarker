@@ -1,16 +1,14 @@
 package com.rtnfacelandmarker
 
-import androidx.camera.core.ExperimentalGetImage
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.common.MapBuilder
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewManagerDelegate
-import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerInterface
 import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerDelegate
+import com.facebook.react.viewmanagers.RTNFaceLandmarkerManagerInterface
 
-@ExperimentalGetImage @ReactModule(name = FaceLandmarkerManager.NAME)
+@ReactModule(name = FaceLandmarkerManager.NAME)
 class FaceLandmarkerManager(private val mCallerContext: ReactApplicationContext) :
     SimpleViewManager<FaceLandmarker>(), RTNFaceLandmarkerManagerInterface<FaceLandmarker?> {
 
@@ -29,13 +27,13 @@ class FaceLandmarkerManager(private val mCallerContext: ReactApplicationContext)
     }
 
     override fun createViewInstance(reactContext: ThemedReactContext): FaceLandmarker {
-        val reactnativeScannerView = FaceLandmarker(reactContext)
-        reactnativeScannerView.setUpCamera(reactContext)
-        return reactnativeScannerView
+        val faceLandmarker = FaceLandmarker(mCallerContext)
+        faceLandmarker.setUpCamera(mCallerContext)
+        return faceLandmarker
     }
 
     companion object {
-        const val NAME = "FaceLandmarker"
+        const val NAME = "RTNFaceLandmarker"
     }
 
 }
