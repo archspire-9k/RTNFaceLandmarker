@@ -1,7 +1,6 @@
 package com.rtnfacelandmarker
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
@@ -9,23 +8,18 @@ import android.view.Choreographer
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageProxy
+import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.core.content.ContextCompat
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContext
-import com.facebook.react.uimanager.UIManagerHelper
-import com.facebook.react.uimanager.events.EventDispatcher
+import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.facemesh.FaceMeshDetection
 import com.google.mlkit.vision.facemesh.FaceMeshDetector
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.facemesh.FaceMesh
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -36,10 +30,12 @@ class FaceLandmarker(context: Context) :  LinearLayout(context) {
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var defaultDetector: FaceMeshDetector
     private var analysisUseCase: ImageAnalysis = ImageAnalysis.Builder()
+        .setTargetAspectRatio(AspectRatio.RATIO_4_3)
+        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+        .setOutputImageFormat(OUTPUT_IMAGE_FORMAT_YUV_420_888)
         .build()
 
     companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf(
                 Manifest.permission.CAMERA
