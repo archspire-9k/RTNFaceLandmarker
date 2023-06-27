@@ -1,6 +1,6 @@
 @file:Suppress("BlockingMethodInNonBlockingContext")
 
-package com.example.cameraxstarter
+package com.rtnfacelandmarker
 
 import android.content.Context
 import android.util.Log

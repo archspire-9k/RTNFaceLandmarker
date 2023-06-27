@@ -29,17 +29,6 @@ class FaceLandmarker(context: Context) : LinearLayout(context) {
     private lateinit var defaultDetector: FaceMeshDetector
     private var shouldShowCamera: MutableState<Boolean> = mutableStateOf(false)
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            Log.i("kilo", "Permission granted")
-            shouldShowCamera.value = true
-        } else {
-            Log.i("kilo", "Permission denied")
-        }
-    }
-
     init {
 
         cameraExecutor = Executors.newSingleThreadExecutor()

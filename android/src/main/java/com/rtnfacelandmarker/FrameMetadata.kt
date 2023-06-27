@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cameraxstarter
+package com.example.rtnfacelandmarker
 
 /** Describing a frame info.  */
 class FrameMetadata private constructor(val width: Int, val height: Int, val rotation: Int) {
