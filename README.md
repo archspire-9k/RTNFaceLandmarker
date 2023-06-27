@@ -1,3 +1,3 @@
 # RTNFaceLandmarker
-Native module for React Native new architecture using Fabric\
-Currently supports Android only
+Native module for React Native new architecture using Fabric, MLKit, and Jetpack Compose to create a camera preview with drawn face landmark on top\
+Current support: Android
