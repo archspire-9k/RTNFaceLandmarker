@@ -1,6 +1,8 @@
 package com.rtnfacelandmarker
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.camera.core.ExperimentalGetImage
@@ -8,6 +10,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.facebook.react.bridge.ReactApplicationContext
 import com.google.mlkit.vision.facemesh.FaceMeshDetection
 import com.google.mlkit.vision.facemesh.FaceMeshDetector
 import java.util.concurrent.ExecutorService
@@ -20,17 +24,16 @@ import java.util.concurrent.Executors
     private val composeView: ComposeView = ComposeView(context)
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var defaultDetector: FaceMeshDetector
-    private var shouldShowCamera: MutableState<Boolean> = mutableStateOf(false)
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf(
+                Manifest.permission.CAMERA
+            ).toTypedArray()
+    }
 
     init {
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
-
-        defaultDetector = FaceMeshDetection.getClient(
-//            FaceMeshDetectorOptions.Builder()
-//                .setUseCase(FaceMeshDetectorOptions.BOUNDING_BOX_ONLY)
-//                .build()
-        )
         
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -47,7 +50,7 @@ import java.util.concurrent.Executors
         // addView(preview)
 
         composeView.setContent {
-            if (shouldShowCamera.value) {
+            if (allPermissionsGranted()) {
                 CameraView(
                     executor = cameraExecutor,
                     defaultDetector = defaultDetector,
@@ -80,4 +83,17 @@ import java.util.concurrent.Executors
     //     }
     // }
 
+    fun setUpCamera(reactApplicationContext: ReactApplicationContext) {
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
+        defaultDetector = FaceMeshDetection.getClient(
+        )
+
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            context, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 }

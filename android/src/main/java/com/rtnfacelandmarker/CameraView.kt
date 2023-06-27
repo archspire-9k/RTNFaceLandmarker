@@ -6,7 +6,6 @@ import android.content.Context
 import android.util.Log
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageAnalysis.OUTPUT_IMAGE_FORMAT_YUV_420_888
 import androidx.camera.core.Preview
@@ -45,7 +44,7 @@ import kotlin.coroutines.suspendCoroutine
 /*
     Only works in portrait mode so far since the readjustment formula takes the value of width directly
  */
-@ExperimentalGetImage
+
 @Composable
 fun CameraView(executor: ExecutorService, defaultDetector: FaceMeshDetector, context: Context) {
     var boundsList by remember { mutableStateOf(listOf<FaceMesh>()) }
