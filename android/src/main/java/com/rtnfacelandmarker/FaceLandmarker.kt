@@ -22,8 +22,8 @@ import java.util.concurrent.Executors
 
 class FaceLandmarker(context: Context) : LinearLayout(context) {
 
-    private var preview: PreviewView
-    private var mCameraProvider: ProcessCameraProvider? = null
+    // private var preview: PreviewView
+    // private var mCameraProvider: ProcessCameraProvider? = null
     private val composeView: ComposeView = ComposeView(context)
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var defaultDetector: FaceMeshDetector
@@ -58,10 +58,10 @@ class FaceLandmarker(context: Context) : LinearLayout(context) {
         orientation = VERTICAL
 
         // preview = PreviewView(context)
-        preview.layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+        // preview.layoutParams = ViewGroup.LayoutParams(
+        //     ViewGroup.LayoutParams.MATCH_PARENT,
+        //     ViewGroup.LayoutParams.MATCH_PARENT
+        // )
         // addView(preview)
 
         composeView.setContent {
@@ -77,25 +77,25 @@ class FaceLandmarker(context: Context) : LinearLayout(context) {
         addView(composeView)
     }
 
-    private fun setupLayoutHack() {
-        Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
-            override fun doFrame(frameTimeNanos: Long) {
-                manuallyLayoutChildren()
-                viewTreeObserver.dispatchOnGlobalLayout()
-                Choreographer.getInstance().postFrameCallback(this)
-            }
-        })
-    }
+    // private fun setupLayoutHack() {
+    //     Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
+    //         override fun doFrame(frameTimeNanos: Long) {
+    //             manuallyLayoutChildren()
+    //             viewTreeObserver.dispatchOnGlobalLayout()
+    //             Choreographer.getInstance().postFrameCallback(this)
+    //         }
+    //     })
+    // }
 
-    private fun manuallyLayoutChildren() {
-        for (i in 0 until childCount) {
-            val child = getChildAt(i)
-            child.measure(
-                MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
-            )
-            child.layout(0, 0, child.measuredWidth, child.measuredHeight)
-        }
-    }
+    // private fun manuallyLayoutChildren() {
+    //     for (i in 0 until childCount) {
+    //         val child = getChildAt(i)
+    //         child.measure(
+    //             MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
+    //             MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
+    //         )
+    //         child.layout(0, 0, child.measuredWidth, child.measuredHeight)
+    //     }
+    // }
 
 }
